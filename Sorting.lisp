@@ -36,3 +36,56 @@
 		(T (format t "Can't compare ~d and ~d.~%" x y))
 	)
 )
+
+(defun mergesort (sequence &aux len)
+	(set len (length sequence))
+	(if (= len 1) 
+		sequence
+		(own-merge 
+			(mergesort (subseq sequence 0 (truncate len 2)) )
+			(mergesort (subseq sequence (truncate len 2)) ) 
+		)
+	)	
+)
+
+(defun own-merge (listA listB &aux result)
+	
+	(when (and listA listB)
+		(let ((compareResult (compare (car listA) (car listB))))
+			(if (eq 0 compareResult) 
+				(or
+					(setq result (append result (list (car listB))))
+					(setq listB (cdr listB) )
+					(setq result (append result (list (car listA))))
+					(setq listB (cdr listA) ) 
+				)
+			)
+			(if (eq 1 compareResult)
+				(or
+					(setq result (append result (list (car listB))))
+					(setq listB (cdr listB))
+				)
+			)
+			(if (eq -1 compareResult)
+				(or
+					(setq result (append result (list (car listA))))
+					(setq listB (cdr listA))
+				)
+			)
+		)
+	) 
+	(unless (null listA) 
+		(setq result (append result (list (car listA))))
+		(setq listB (cdr listA))
+	)
+	(unless (null listB) 
+		(setq result (append result (list (car listB))))
+		(setq listB (cdr listB))		
+	)
+	result	
+)
+
+(defun append-and-cut (sequence sequenceName appended appendedName)
+	(setq sequenceName(append sequence(list (car appended))))
+	(setq appendedName(cdr appended) )
+)
