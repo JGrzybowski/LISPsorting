@@ -1,6 +1,6 @@
 (defun subCompare (x y typePredicate areEqual isLessThan)
 	"Sum any two numbers after printing a message."
-	(format t "Comparing ~d and ~d. ~%" x y)
+	;(format t "Comparing ~d and ~d. ~%" x y)
 	(if (apply typePredicate (list x))
 		(if (apply typePredicate (list y))
 			(cond 
