@@ -55,16 +55,16 @@
 (defun singleCompareTest (nTest x y result)
 	"Single compare function Unit test."
 	(if (eq result (compare x y))
-		(format t "Unit test #~d [~d ~d => ~d] PASSED. ~%" nTest x y result)
-		(format t "Unit test #~d [~d ~d => ~d] FAILED. ~%" nTest x y result)
+		(format t "Unit test #~d PASSED. [~d ~d => ~d] ~%" nTest x y result)
+		(format t "Unit test #~d FAILED. [~d ~d => ~d] ~%" nTest x y result)
 	)
 ) 
 
 (defun test-own-merge(nTest x y result)
 	"Single own-merge function Unit test."
 	(if (equal 0 (compare result (own-merge x y)))
-		(format t "Unit test #~d [~d ~d => ~d] PASSED. ~%" nTest x y result)
-		(format t "Unit test #~d [~d ~d => ~d] FAILED. ~%" nTest x y result)
+		(format t "Unit test #~d PASSED. [~d ~d => ~d] ~%" nTest x y result)
+		(format t "Unit test #~d FAILED. [~d ~d => ~d] ~%" nTest x y result)
 	)
 )
 
@@ -72,6 +72,7 @@
 	"Runs mergesort unit tests."
 	;(format T "Testing ~a.~%" sortingFunction)
 	(sortingTest 1 sortingFunction (list 4 3 2 1) (list 1 2 3 4) )
+	(sortingTest 2 sortingFunction (list (list 4 2 1) (list 1 2 3) (list 2 1 3)) (list (list 1 2 3) (list 2 1 3) (list 4 2 1)))
 )
 
 (defun sortingTest (nTest sortingFunction argument expectedResult)

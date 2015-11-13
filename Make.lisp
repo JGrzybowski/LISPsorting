@@ -1,4 +1,10 @@
 (defun Make()
 	(load "Sorting.lisp")
+	(load "MergeSort.lisp")
 	(load "Tests.lisp")
+)
+
+(defun MakeTests()
+	(Make)
+	(testall)
 )
