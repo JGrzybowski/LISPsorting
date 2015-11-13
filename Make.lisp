@@ -1,6 +1,7 @@
 (defun Make()
 	(load "Sorting.lisp")
 	(load "MergeSort.lisp")
+	(load "BubbleSort.lisp")
 	(load "Tests.lisp")
 )
 

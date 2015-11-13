@@ -7,6 +7,7 @@
 	(test-own-merge 3 (list 1 10) (list 5 2) (list 1 5 2 10))
 	(test-own-merge 4 (list 3 4) (list 1 2) (list 1 2 3 4))
 	(test-sorting #'mergesort)
+	(test-sorting #'bubblesort)
 )
 
 (defun test-compare()
@@ -78,11 +79,15 @@
 (defun sortingTest (nTest sortingFunction argument expectedResult)
 	"Single generic sorting unit test."
 	;(format T "Single ~a test ~a => ~a).~%" sortingFunction argument expectedResult)
-	(let ((result (compare (apply sortingFunction (list argument)) expectedResult)))
+	(let* 
+		(
+			(sortingResult (apply sortingFunction (list argument)))
+			(result (compare sortingResult expectedResult))
+		)
 		;(format T "Single test ~a => ~a [~a]).~%" argument expectedResult result)
 		(if (equal result 0)
-			(format t "Unit test #~a PASSED. [~a ~a] ~%" nTest argument expectedResult)
-			(format t "Unit test #~a FAILED. [~a ~a]~%" nTest argument expectedResult)
+			(format t "Unit test #~a PASSED. ~% in:~a ~%out:~a ~%exp:~a  ~%~%" nTest argument sortingResult expectedResult)
+			(format t "Unit test #~a FAILED. ~% in:~a ~%out:~a ~%exp:~a  ~%~%" nTest argument sortingResult expectedResult)
 		)
 	)
 )
