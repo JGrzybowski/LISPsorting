@@ -2,8 +2,10 @@
 	"Runs all unit tests."
 	(load "Sorting.lisp")
 	(test-compare)
-	(test-own-merge 1 (list 1 10) (list 9 11) (list 1 9 10 11))
-	(test-own-merge 1 (list 1 10) (list 5 2) (list 1 5 2 10))
+	(test-own-merge 1 (list 1) (list 11) (list 1 11))
+	(test-own-merge 2 (list 11) (list 1) (list 1 11))
+	(test-own-merge 3 (list 1 10) (list 5 2) (list 1 5 2 10))
+	(test-own-merge 4 (list 3 4) (list 1 2) (list 1 2 3 4))
 	(test-sorting #'mergesort)
 )
 
@@ -60,7 +62,7 @@
 
 (defun test-own-merge(nTest x y result)
 	"Single own-merge function Unit test."
-	(if (compare result (own-merge x y))
+	(if (equal 0 (compare result (own-merge x y)))
 		(format t "Unit test #~d [~d ~d => ~d] PASSED. ~%" nTest x y result)
 		(format t "Unit test #~d [~d ~d => ~d] FAILED. ~%" nTest x y result)
 	)
@@ -68,13 +70,18 @@
 
 (defun test-sorting(sortingFunction)
 	"Runs mergesort unit tests."
+	;(format T "Testing ~a.~%" sortingFunction)
 	(sortingTest 1 sortingFunction (list 4 3 2 1) (list 1 2 3 4) )
 )
 
 (defun sortingTest (nTest sortingFunction argument expectedResult)
 	"Single generic sorting unit test."
-	(if (eq 0 (compare (apply sortingFunction (list argument)) expectedResult))
-		(format t "Unit test #~d PASSED. [~a ~a] ~%" nTest argument expectedResult)
-		(format t "Unit test #~d FAILED. [~a ~a]~%" nTest argument expectedResult)
+	;(format T "Single ~a test ~a => ~a).~%" sortingFunction argument expectedResult)
+	(let ((result (compare (apply sortingFunction (list argument)) expectedResult)))
+		;(format T "Single test ~a => ~a [~a]).~%" argument expectedResult result)
+		(if (equal result 0)
+			(format t "Unit test #~a PASSED. [~a ~a] ~%" nTest argument expectedResult)
+			(format t "Unit test #~a FAILED. [~a ~a]~%" nTest argument expectedResult)
+		)
 	)
 )
