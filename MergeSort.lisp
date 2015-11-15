@@ -11,6 +11,20 @@
 	)	
 )
 
+(defmacro mergesort-macro (sequence)
+	(let ((sequence-var-name (gensym)) (length-var-name (gensym)))
+		`(let*  ( (,sequence-var-name ,sequence) (,length-var-name (length ,sequence-var-name)))
+			(if (= ,length-var-name 1)
+				,sequence-var-name
+				(own-merge 
+					(mergesort-macro (subseq ,sequence-var-name 0 (truncate ,length-var-name 2)) )
+					(mergesort-macro (subseq ,sequence-var-name (truncate ,length-var-name 2)) ) 					
+				)		
+			)
+		)		
+	)
+)
+
 (defun own-merge (listA listB &aux result)
 	(loop
 		while (and listA listB)
