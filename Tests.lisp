@@ -8,6 +8,7 @@
 	(test-own-merge 4 (list 3 4) (list 1 2) (list 1 2 3 4))
 	(test-sorting #'mergesort)
 	(test-sorting #'bubblesort)
+	(test-sorting #'qusort)
 )
 
 (defun test-compare()

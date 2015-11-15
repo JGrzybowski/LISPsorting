@@ -4,6 +4,7 @@
 	(load "MergeSort.lisp")
 	(load "BubbleSort.lisp")
 	(load "HeapSort.lisp")
+	(load "QuickSort.lisp")
 	(load "Tests.lisp")
 )
 
