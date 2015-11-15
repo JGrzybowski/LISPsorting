@@ -14,7 +14,7 @@
 	(loop for i from 1 to (length sequence)
 	do ( 
 	progn
-		(format T "Sorted: ~a ToSort:~a ~%" sorted sequence)
+		;(format T "Sorted: ~a ToSort:~a ~%" sorted sequence)
 		(setq sorted (append (bubble sequence) sorted))
 		(setq sequence (butlast sequence))
 		;(format T "Sorted: ~a ToSort:~a ~%" sorted sequence)
