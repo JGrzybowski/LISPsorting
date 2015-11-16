@@ -11,6 +11,7 @@
 	(test-sorting qusort)
 	(test-sorting mergesort-macro)
 	(test-sorting bubblesort-with-macro)
+	(test-sorting heapsort-with-macro)
 )
 
 (defun test-compare()
@@ -73,6 +74,7 @@
 )
 
 
+
 (defmacro sortingTest (nTest sortingFunction argument expectedResult)
 	"Single generic sorting unit test."
 	;(format T "Single ~a test ~a => ~a).~%" sortingFunction argument expectedResult)
@@ -86,10 +88,9 @@
 				(,result-name (compare ,sortingResult-name ,exp-name))
 			)
 			;(format T "Single test ~a => ~a [~a]).~%" argument expectedResult result)
-			(if (equal ,result-name 0)
-				(format t "~a test #~a PASSED. ~% in:~a ~%out:~a ~%exp:~a  ~%~%" ',sortingFunction ,nTest ,arg-name ,sortingResult-name ,exp-name)
-				(format t "~a test #~a FAILED. ~% in:~a ~%out:~a ~%exp:~a  ~%~%" ',sortingFunction ,nTest ,arg-name ,sortingResult-name ,exp-name)
-			)
+			(format t "~a test #~a ~:[FAILED~;passed~]. ~% in:~a ~%out:~a ~%exp:~a  ~%~%" 
+				',sortingFunction ,nTest (= 0 ,result-name) ,arg-name  ,sortingResult-name ,exp-name)
+
 		)
 	)
 )
@@ -97,7 +98,7 @@
 (defmacro test-sorting(sortingFunction)
 	"Runs mergesort unit tests."
 	;(format T "Testing ~a.~%" sortingFunction)
-	(let* ((examples-name (gensym)) )
+	(let ((examples-name (gensym)) )
 		`(let ((,examples-name (list 1 2 3))) 
 			(sortingTest 1 ,sortingFunction (list 4 3 2 1) (list 1 2 3 4) )
 			(sortingTest 2 ,sortingFunction (list (list 4 2 1) (list 1 2 3) (list 2 1 3)) (list (list 1 2 3) (list 2 1 3) (list 4 2 1)))
@@ -105,4 +106,3 @@
 		)
 	)
 )
-
