@@ -2,13 +2,16 @@
 	"Runs all unit tests."
 	(load "Sorting.lisp")
 	(test-compare)
-	(test-own-merge 1 (list 1) (list 11) (list 1 11))
-	(test-own-merge 2 (list 11) (list 1) (list 1 11))
-	(test-own-merge 3 (list 1 10) (list 5 2) (list 1 5 2 10))
-	(test-own-merge 4 (list 3 4) (list 1 2) (list 1 2 3 4))
-	(test-sorting #'mergesort)
-	(test-sorting #'bubblesort)
-	(test-sorting #'qusort)
+	;(test-own-merge 1 (list 1) (list 11) (list 1 11))
+	;(test-own-merge 2 (list 11) (list 1) (list 1 11))
+	;(test-own-merge 3 (list 1 10) (list 5 2) (list 1 5 2 10))
+	;(test-own-merge 4 (list 3 4) (list 1 2) (list 1 2 3 4))
+	(test-sorting mergesort)
+	(test-sorting bubblesort)
+	(test-sorting qusort)
+	(test-sorting mergesort-macro)
+	(test-sorting bubblesort-with-macro)
+	(test-sorting heapsort-with-macro)
 )
 
 (defun test-compare()
@@ -70,25 +73,36 @@
 	)
 )
 
-(defun test-sorting(sortingFunction)
-	"Runs mergesort unit tests."
-	;(format T "Testing ~a.~%" sortingFunction)
-	(sortingTest 1 sortingFunction (list 4 3 2 1) (list 1 2 3 4) )
-	(sortingTest 2 sortingFunction (list (list 4 2 1) (list 1 2 3) (list 2 1 3)) (list (list 1 2 3) (list 2 1 3) (list 4 2 1)))
-)
 
-(defun sortingTest (nTest sortingFunction argument expectedResult)
+
+(defmacro sortingTest (nTest sortingFunction argument expectedResult)
 	"Single generic sorting unit test."
 	;(format T "Single ~a test ~a => ~a).~%" sortingFunction argument expectedResult)
-	(let* 
-		(
-			(sortingResult (apply sortingFunction (list argument)))
-			(result (compare sortingResult expectedResult))
+	(let* ( (nTest-name (gensym)) (arg-name (gensym)) (exp-name (gensym)) (sortingResult-name (gensym)) (result-name (gensym)) )
+		`(let* 
+			(
+				(,nTest-name ,nTest)
+				(,arg-name ,argument)
+				(,exp-name ,expectedResult)
+				(,sortingResult-name (,sortingFunction ,arg-name))
+				(,result-name (compare ,sortingResult-name ,exp-name))
+			)
+			;(format T "Single test ~a => ~a [~a]).~%" argument expectedResult result)
+			(format t "~a test #~a ~:[FAILED~;passed~]. ~% in:~a ~%out:~a ~%exp:~a  ~%~%" 
+				',sortingFunction ,nTest (= 0 ,result-name) ,arg-name  ,sortingResult-name ,exp-name)
+
 		)
-		;(format T "Single test ~a => ~a [~a]).~%" argument expectedResult result)
-		(if (equal result 0)
-			(format t "Unit test #~a PASSED. ~% in:~a ~%out:~a ~%exp:~a  ~%~%" nTest argument sortingResult expectedResult)
-			(format t "Unit test #~a FAILED. ~% in:~a ~%out:~a ~%exp:~a  ~%~%" nTest argument sortingResult expectedResult)
+	)
+)
+
+(defmacro test-sorting(sortingFunction)
+	"Runs mergesort unit tests."
+	;(format T "Testing ~a.~%" sortingFunction)
+	(let ((examples-name (gensym)) )
+		`(let ((,examples-name (list 1 2 3))) 
+			(sortingTest 1 ,sortingFunction (list 4 3 2 1) (list 1 2 3 4) )
+			(sortingTest 2 ,sortingFunction (list (list 4 2 1) (list 1 2 3) (list 2 1 3)) (list (list 1 2 3) (list 2 1 3) (list 4 2 1)))
+			(sortingTest 3 ,sortingFunction (list (list 3 2 1) "abc" 3 #\a NIL) (list NIL 3 #\a "abc" (list 3 2 1)) )
 		)
 	)
 )
