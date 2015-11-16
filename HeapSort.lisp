@@ -3,6 +3,7 @@
 	(shift-heap sequence)
 )
 
+
 (defun LIndex (n) (+ (* n 2) 1) )
 (defun RIndex (n) (+ (* n 2) 2) )
 (defun PIndex (n) (truncate (- n 1) 2))
@@ -61,4 +62,26 @@
 		)
 	)
 	heap
+)
+
+(defmacro shift-heap-macro (heap)
+	(let ((heap-name (gensym)))
+		`(let ((,heap-name ,heap))
+			(when (< 1 (length ,heap-name))
+				(rotatef (car ,heap-name) (car (last ,heap-name)))
+				(setq ,heap-name
+					(append  
+						(last ,heap-name) 
+						(shift-heap (shift-down (butlast ,heap-name) 0)) 
+					)
+				)
+			)
+			,heap-name
+		)
+	)
+)
+
+(defun heapsort-with-macro (sequence)
+	(setq sequence (buildheap sequence))
+	(shift-heap-macro sequence)
 )

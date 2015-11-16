@@ -37,3 +37,23 @@
 	)
 )
 
+(defmacro seqcompare (compareF sequence)
+	(let ((seq-name (gensym)) (len-name (gensym)))
+		`(let* ( (,seq-name ,sequence) (,len-name (length ,seq-name)) )
+			(progn
+			(format T "Sequence= ~a ~% " ,seq-name)
+			(if (< 1 ,len-name) 
+				(progn
+					(format T "Comparing A=[~a] B=[~a] ~% " (car ,seq-name) (cadr ,seq-name))
+					(if (,compareF (compare (car ,seq-name) (cadr ,seq-name)) 0)
+						(seqcompare ,compareF (cdr ,seq-name))
+						NIL
+					)
+				)
+				T
+			)
+			)
+		)
+	)
+)
+
