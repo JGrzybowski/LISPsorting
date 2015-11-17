@@ -1,6 +1,6 @@
 (defun insert (a L)
   (if (null L)
-    (cons a nil)
+    (list a)
     (if (>= 0 (compare a (car L)))
       (cons a L)
       (cons (car L) (insert a (cdr L))))))

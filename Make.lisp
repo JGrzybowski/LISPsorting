@@ -5,6 +5,9 @@
 	(load "BubbleSort.lisp")
 	(load "HeapSort.lisp")
 	(load "QuickSort.lisp")
+	(load "InsertionSort.lisp")
+	(load "ShellSort.lisp")
+	(load "SelectionSort.lisp")
 	(load "Tests.lisp")
 )
 
