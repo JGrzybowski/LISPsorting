@@ -18,3 +18,14 @@
 		((or (null a)(null b)) nil)
 		((>= 0 (compare a (car b)))(leftlist a (cdr b)))
 		(t(cons (car b)(leftlist a (cdr b))))))
+		
+(defmacro quicksort-macro (L)
+	(let ((L-name (gensym)) )
+		`(let ((,L-name ,L))
+			(cond
+				((null ,L-name) nil)
+				(t 
+					(append
+						(quicksort-macro (leftlist (car ,L-name) (cdr ,L-name)))
+						(cons (car ,L-name) nil)
+						(quicksort-macro (rightlist (car ,L-name) (cdr ,L-name)))))))))
